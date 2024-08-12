@@ -30,7 +30,6 @@
 
 
 
-// src/context/UserContext.jsx
 import axios from 'axios';
 import { createContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -45,10 +44,15 @@ export function UserContextProvider({ children }) {
         axios.get('/api/auth/profile', { withCredentials: true })
             .then(({ data }) => {
                 console.log('User data:', data); // Log the user data
-                setUser(data); // Ensure data has a name field
+                if (data) {
+                    setUser(data); // Ensure data has a name field
+                } else {
+                    console.log('No user data returned');
+                    setUser(null);
+                }
             })
             .catch((error) => {
-                console.error('Error fetching user profile:', error);
+                console.error('Error fetching user profile:', error.response ? error.response.data : error.message);
                 setUser(null);
             });
     }, []);
@@ -56,19 +60,21 @@ export function UserContextProvider({ children }) {
     const login = async (email, password) => {
         try {
             const { data } = await axios.post('/api/auth/login', { email, password }, { withCredentials: true });
+            console.log('Login successful:', data);
             setUser(data);
         } catch (error) {
-            console.error('Error logging in:', error);
+            console.error('Error logging in:', error.response ? error.response.data : error.message);
         }
     };
 
     const logout = async () => {
         try {
             await axios.post('/api/auth/logout', {}, { withCredentials: true });
+            console.log('Logout successful');
             setUser(null);
             navigate('/login'); // Redirect to login page
         } catch (error) {
-            console.error('Error logging out:', error);
+            console.error('Error logging out:', error.response ? error.response.data : error.message);
         }
     };
 
