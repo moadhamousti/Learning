@@ -7,7 +7,7 @@ const { registerUser, test, getProfile, logoutUser, loginUser } = require('../co
 router.use(
     cors({
         credentials: true,
-        origin: 'http://localhost:5173',
+        origin: 'https://e-learning-rosy-sigma.vercel.app/',
     })
 );
 
