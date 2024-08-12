@@ -29,7 +29,6 @@
 
 
 
-
 import axios from 'axios';
 import { createContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -44,12 +43,7 @@ export function UserContextProvider({ children }) {
         axios.get('https://learning-cm37.onrender.com/api/auth/profile', { withCredentials: true })
             .then(({ data }) => {
                 console.log('User data:', data); // Log the user data
-                if (data) {
-                    setUser(data); // Ensure data has a name field
-                } else {
-                    console.log('No user data returned');
-                    setUser(null);
-                }
+                setUser(data); // Set user data
             })
             .catch((error) => {
                 console.error('Error fetching user profile:', error.response ? error.response.data : error.message);

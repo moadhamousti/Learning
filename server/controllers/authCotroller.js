@@ -51,10 +51,17 @@ const loginUser = async (req, res) => {
 
         const match = await comparePassword(password, user.password);
         if (match) {
-            const token = jwt.sign({ email: user.email, id: user._id, name: user.name, isAdmin: user.isAdmin }, process.env.JWT_SECRET, {}, (err, token) => {
-                if (err) throw err;
-                res.cookie('token', token).json(user);
+            const token = jwt.sign(
+                { email: user.email, id: user._id, name: user.name, isAdmin: user.isAdmin },
+                process.env.JWT_SECRET,
+                { expiresIn: '1h' } // Token expiration
+            );
+            res.cookie('token', token, {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === 'production',
+                sameSite: 'None'
             });
+            return res.json({ email: user.email, id: user._id, name: user.name, isAdmin: user.isAdmin }); // Return user details
         } else {
             return res.status(401).json({ error: 'Password does not match' });
         }
@@ -64,17 +71,22 @@ const loginUser = async (req, res) => {
     }
 };
 
+
 const getProfile = (req, res) => {
     const { token } = req.cookies;
     if (token) {
-        jwt.verify(token, process.env.JWT_SECRET, {}, (err, user) => {
-            if (err) throw err;
-            res.json(user);
+        jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+            if (err) {
+                console.error('Token verification error:', err);
+                return res.status(401).json({ error: 'Invalid token' });
+            }
+            res.json(user); // Send user data
         });
     } else {
-        res.json(null);
+        res.status(401).json({ error: 'No token provided' });
     }
 };
+
 
 const logoutUser = (req, res) => {
     res.clearCookie('token');
