@@ -66,7 +66,7 @@ function Navbar() {
             className="w-12 h-12 rounded-full overflow-hidden border border-gray-300 focus:outline-none"
           >
             <img
-              src={userImage || './default-avatar.png'} // Ensure fallback works
+              src={userImage || 'https://firebasestorage.googleapis.com/v0/b/e-learning-9e559.appspot.com/o/profilPics%2Fde7834s-6515bd40-8b2c-4dc6-a843-5ac1a95a8b55.jpg?alt=media&token=03d1a2e9-28fc-4396-bbc5-350fbef270e7'} // Ensure fallback works
               alt="User Avatar"
               className="object-cover sm:w-full sm:h-full w-fit h-fit "
               onError={(e) => {
