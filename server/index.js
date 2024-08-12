@@ -5,7 +5,6 @@ const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const app = express();
 
-// Connect to MongoDB
 mongoose.connect(process.env.MONGO_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -20,29 +19,16 @@ app.use(cookieParser());
 
 // Configure CORS middleware
 app.use(cors({
-    origin: 'https://e-learning-rosy-sigma.vercel.app', // Replace with your frontend URL
+    origin: 'http://localhost:5173', // Replace with the origin of your frontend application
     credentials: true // Allow credentials
 }));
-
-// Add debugging middleware
-app.use((req, res, next) => {
-    console.log('Incoming request:', req.method, req.url);
-    console.log('Cookies:', req.cookies); // Log cookies for debugging
-    next();
-});
 
 // Routes
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/courses', require('./routes/coursesRoute'));
-app.use('/api/form', require('./routes/formRoutes')); // Ensure this matches your API calls
+app.use('/api/form', require('./routes/formRoutes')); // Make sure this matches your API calls
 app.use('/', require('./routes/dashboardRoutes'));
 app.use('/api', require('./routes/userRoutes'));
 
-// Error handling middleware
-app.use((err, req, res, next) => {
-    console.error('Server Error:', err);
-    res.status(500).json({ error: 'Internal Server Error' });
-});
-
-const port = process.env.PORT || 8000; // Use PORT from environment variables if available
+const port = 8000;
 app.listen(port, () => console.log(`Server is running on port ${port}`));
