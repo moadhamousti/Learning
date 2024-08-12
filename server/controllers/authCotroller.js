@@ -1,13 +1,12 @@
+// server/controllers/authController.js
 const User = require('../models/user');
 const { hashPassword, comparePassword } = require('../helpers/auth');
 const jwt = require('jsonwebtoken');
 
-// Test route
 const test = (req, res) => {
     res.json('Test is working');
 };
 
-// Register a new user
 const registerUser = async (req, res) => {
     try {
         const { name, password, email } = req.body;
@@ -41,7 +40,6 @@ const registerUser = async (req, res) => {
     }
 };
 
-// Login a user
 const loginUser = async (req, res) => {
     try {
         const { email, password } = req.body;
@@ -53,19 +51,10 @@ const loginUser = async (req, res) => {
 
         const match = await comparePassword(password, user.password);
         if (match) {
-            const token = jwt.sign(
-                { email: user.email, id: user._id, name: user.name, isAdmin: user.isAdmin },
-                process.env.JWT_SECRET,
-                { expiresIn: '1h' } // Set token expiration
-            );
-
-            res.cookie('token', token, {
-                httpOnly: true,
-                secure: process.env.NODE_ENV === 'production', // Only set to true in production
-                sameSite: 'None' // Set to 'None' if using cross-site cookies
+            const token = jwt.sign({ email: user.email, id: user._id, name: user.name, isAdmin: user.isAdmin }, process.env.JWT_SECRET, {}, (err, token) => {
+                if (err) throw err;
+                res.cookie('token', token).json(user);
             });
-
-            return res.json(user);
         } else {
             return res.status(401).json({ error: 'Password does not match' });
         }
@@ -75,30 +64,20 @@ const loginUser = async (req, res) => {
     }
 };
 
-// Get user profile
 const getProfile = (req, res) => {
     const { token } = req.cookies;
     if (token) {
-        jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-            if (err) {
-                console.error('Token verification error:', err);
-                return res.status(401).json({ error: 'Invalid token' });
-            }
+        jwt.verify(token, process.env.JWT_SECRET, {}, (err, user) => {
+            if (err) throw err;
             res.json(user);
         });
     } else {
-        console.log('No token found');
-        res.status(401).json({ error: 'No token provided' });
+        res.json(null);
     }
 };
 
-// Logout a user
 const logoutUser = (req, res) => {
-    res.clearCookie('token', {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production', // Only set to true in production
-        sameSite: 'None' // Set to 'None' if using cross-site cookies
-    });
+    res.clearCookie('token');
     res.json({ message: 'Logged out successfully' });
 };
 
