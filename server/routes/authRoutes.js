@@ -15,9 +15,9 @@ router.use(
 // Routes
 router.get('/', test)
 router.post('/register', registerUser)
-router.post('/login', requireAuth, loginUser); // This will block logged-in users from accessing login
-router.get('/profile', requireAuth, getProfile); // Ensure profile is protected
-router.post('/logout', requireAuth, logoutUser);
+router.post('/login', requireAuth, loginUser);
+router.get('/profile', getProfile);
+router.post('/logout', logoutUser);
 
 
 module.exports = {
