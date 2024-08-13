@@ -1,29 +1,44 @@
-import React from 'react'
-import { Link } from 'react-router-dom';
+import React from 'react';
 
 function Choose_Us() {
   return (
-
     <>
-      {/* -------------------why should you choose us -------------------------- */}
-      <div className="lg:grid md:grid  place-items-center	 my-10">
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 bg-[--primary-color] max-w-7xl rounded-2xl lg:w-full md:w-11/12 ">
-          <div className="p-10">
-            <h1 className="lg:text-6xl sm:text-3xl font-bold text-[--text-color] leading-20	 ">Why should you choose us?</h1>
-            <ul className="text-[--text-color] list-none flex flex-col gap-3 mt-3 ">
-              <li className="flex gap-2 items-start 	  "><img src="./star-circle.svg" alt="" />Teachers don't get lost in the grid view and have a dedicated Podium space.</li>
-              <li className="flex gap-2 items-start 	 "><img src="./star-circle.svg" alt="" />Teachers don't get lost in the grid view and have a dedicated Podium space.</li>
-              <li className="flex gap-2 items-start 	 "><img src="./star-circle.svg" alt="" />Teachers don't get lost in the grid view and have a dedicated Podium space.</li>
+      {/* -------------------Why should you choose us -------------------------- */}
+      <div className="my-10 px-4 md:px-8 lg:px-16">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 bg-[--primary-color] rounded-2xl max-w-7xl mx-auto">
+          {/* Text Content */}
+          <div className="p-6 md:p-10 flex flex-col justify-center">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-[--text-color] leading-snug">
+              Why should you choose us?
+            </h1>
+            <ul className="text-[--text-color] list-none flex flex-col gap-3 mt-4">
+              <li className="flex gap-2 items-start">
+                <img src="./star-circle.svg" alt="Star Icon" className="w-6 h-6" />
+                Teachers don't get lost in the grid view and have a dedicated Podium space.
+              </li>
+              <li className="flex gap-2 items-start">
+                <img src="./star-circle.svg" alt="Star Icon" className="w-6 h-6" />
+                Teachers don't get lost in the grid view and have a dedicated Podium space.
+              </li>
+              <li className="flex gap-2 items-start">
+                <img src="./star-circle.svg" alt="Star Icon" className="w-6 h-6" />
+                Teachers can easily see all students and class data at one time.
+              </li>
             </ul>
-            {/* <button type="button" className="text-lg	mt-4 bg-[--text-color] text-[--primary-color] hover:text-[--text-color] border-2 border-transparent hover:border-[--text-color] hover:bg-[--primary-color] p-2  rounded-md"><Link to="#">EXPLORE MORE</Link></button> */}
           </div>
-          <div className="lg:grid lg:place-items-end md:grid md:place-items-end  sm:grid sm:w-full">
-            <img src="./girl-image.svg" alt="" className="h-full lg:rounded-l-none lg:rounded-xl md:rounded-l-none md:rounded-xl sm:rounded-none sm:object-cover" />
+
+          {/* Image Content */}
+          <div className="flex items-center justify-center p-4">
+            <img
+              src="./girl-image.svg"
+              alt="Girl"
+              className="w-full h-auto rounded-lg object-cover"
+            />
           </div>
         </div>
       </div>
-      </>
-  )
+    </>
+  );
 }
 
 export default Choose_Us;
