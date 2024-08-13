@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import toast from 'react-hot-toast';
-import { red } from '@mui/material/colors';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -11,6 +10,23 @@ const Login = () => {
     password: '',
   });
   const [errors, setErrors] = useState({});
+
+  useEffect(() => {
+    // Check if the user is already logged in
+    const checkAuth = async () => {
+      try {
+        const response = await axios.get('https://learning-cm37.onrender.com/api/auth/profile', { withCredentials: true });
+        if (response.data) {
+          // Redirect to another page if user is already logged in
+          navigate('/');
+        }
+      } catch (error) {
+        // No user found or not authenticated
+      }
+    };
+
+    checkAuth();
+  }, [navigate]);
 
   const handleChange = (e) => {
     setData({
@@ -40,22 +56,22 @@ const Login = () => {
 
   const loginUser = async (e) => {
     e.preventDefault();
-  
+
     const validationErrors = validateInputs();
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
       return;
     }
-  
+
     const { email, password } = data;
     try {
       const response = await axios.post('https://learning-cm37.onrender.com/api/auth/login', {
         email,
         password
       }, {
-        withCredentials: true  // Ensure credentials are sent with the request
+        withCredentials: true // Ensure credentials are sent with the request
       });
-  
+
       if (response.data.error) {
         toast.error(response.data.error, {
           icon: '🚫',
@@ -69,7 +85,7 @@ const Login = () => {
             color: 'white',
           },
         });
-        navigate('/formation');
+        navigate('/formation'); // Redirect on successful login
       }
     } catch (error) {
       toast.error('Error logging in. Please try again later.', {
@@ -82,7 +98,6 @@ const Login = () => {
       console.error('Error logging in:', error.response.data); // Log detailed error response
     }
   };
-  
 
   return (
     <div className="flex justify-between items-center h-screen bg-gradient-to-b from-[#063D41] via-[#336a6c] to-[#4B7]">

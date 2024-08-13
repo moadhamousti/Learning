@@ -1,19 +1,11 @@
 const jwt = require('jsonwebtoken');
 
-const requireAuth = (req, res, next) => {
+const isAuthenticated = (req, res, next) => {
     const token = req.cookies.token;
-    if (!token) {
-        return res.status(401).json({ error: 'Access denied, please log in' });
+    if (token) {
+        return res.status(403).json({ error: 'Already logged in' });
     }
-
-    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-        if (err) {
-            return res.status(401).json({ error: 'Invalid token' });
-        }
-
-        req.user = decoded;
-        next();
-    });
+    next();
 };
 
-module.exports = { requireAuth };
+module.exports = { isAuthenticated };

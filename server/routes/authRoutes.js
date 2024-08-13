@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const cors = require('cors');
 const { registerUser, test, getProfile, logoutUser, loginUser } = require('../controllers/authCotroller');
+const { isAuthenticated } = require('../middlewares/requireAuth');
 
 //middleware
 router.use(
@@ -14,7 +15,7 @@ router.use(
 // Routes
 router.get('/', test)
 router.post('/register', registerUser)
-router.post('/login', loginUser)
+router.post('/login', isAuthenticated, loginUser)
 router.get('/profile', getProfile)
 router.post('/logout', logoutUser);
 
