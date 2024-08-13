@@ -13,7 +13,6 @@ import {UserContextProvider} from '../context/userContext/'
 import Dashboard from './pages/Dashboard';
 import ViewUser from './pages/ViewUser';
 import EditUser from './pages/EditUser';
-import Formation from './pages/Formation';
 import AddUser from './pages/AddUser';
 import AddCourse from './pages/AddCourse';
 import ViewCourse from './pages/ViewCourse';
@@ -23,7 +22,6 @@ import CourseDetails from './pages/CourseDetails';
 import CourseVideos from './pages/CourseVideos';
 import ViewForm from './pages/ViewForm';
 import EditForm from './pages/EditForm';
-import PrivateRoute from './components/PrivateRoute';
 
 
 axios.defaults.baseURL= 'https://learning-cm37.onrender.com';
@@ -39,11 +37,7 @@ function App() {
         <Route path="/" element={<HomeNavbar />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        {/* <Route path="/formation" element={<Formation />} /> */}
-        <Route
-          path="/formation"
-          element={<PrivateRoute element={Formation} />}
-        />
+        <Route path="/formation" element={<Formation />} />
         <Route path="/dashboard/*" element={<Dashboard />} />
         <Route path="/formation/course/:courseId" element={<CourseDetails />} />
         <Route path="/formation/videos/:courseId" element={<CourseVideos />} />
