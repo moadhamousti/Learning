@@ -58,7 +58,7 @@ const loginUser = async (req, res) => {
             );
             res.cookie('token', token, {
                 httpOnly: true,
-                secure: process.env.NODE_ENV === 'production',
+                secure: true,  // Set to true by default
                 sameSite: 'None'
             });
             return res.json({ email: user.email, id: user._id, name: user.name, isAdmin: user.isAdmin }); // Return user details
@@ -70,6 +70,7 @@ const loginUser = async (req, res) => {
         return res.status(500).json({ error: 'Something went wrong' });
     }
 };
+
 
 
 const getProfile = (req, res) => {

@@ -22,9 +22,11 @@ import CourseDetails from './pages/CourseDetails';
 import CourseVideos from './pages/CourseVideos';
 import ViewForm from './pages/ViewForm';
 import EditForm from './pages/EditForm';
+import ProtectedRoute from './components/ProtectedRoute';
+import TestUserContext from './components/TestUserContext';
 
 
-axios.defaults.baseURL= 'https://learning-cm37.onrender.com';
+axios.defaults.baseURL= 'https://e-learning-rosy-sigma.vercel.app';
 axios.defaults.withCredentials = true;
 
 function App() {
@@ -37,7 +39,9 @@ function App() {
         <Route path="/" element={<HomeNavbar />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/formation" element={<Formation />} />
+        {/* <Route path="/formation" element={<Formation />} /> */}
+        <Route path="/formation" element={<ProtectedRoute element={<Formation />}/>}/>
+        {/* <Route path="/formation" element={<Formation />} /> */}
         <Route path="/dashboard/*" element={<Dashboard />} />
         <Route path="/formation/course/:courseId" element={<CourseDetails />} />
         <Route path="/formation/videos/:courseId" element={<CourseVideos />} />
@@ -51,6 +55,7 @@ function App() {
         <Route path="/view-user/:userId" element={<ViewUser />} />
         <Route path="/edit-user/:userId" element={<EditUser />} />
         <Route path="/form" to="/form" element={<Form />} />
+        <Route path="/test" to="/test" element={<TestUserContext />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
       </UserContextProvider>

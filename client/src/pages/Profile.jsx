@@ -19,25 +19,25 @@ const Profile = () => {
 
   useEffect(() => {
     const fetchUserData = async () => {
-      if (user?.email) {
+      if (user?.id) {
         try {
-          // Fetch user data
-          const userResponse = await axios.get(`/api/email/${encodeURIComponent(user.email)}`);
+          // Fetch user data by ID
+          const userResponse = await axios.get(`/api/user/me`);
           setUserData(userResponse.data);
-  
+
           // Fetch user forms
           const formsResponse = await axios.get(`/api/form/user/email/${encodeURIComponent(user.email)}`);
           setUserForms(formsResponse.data);
-  
+
         } catch (error) {
           console.error('Error fetching user data or forms:', error.response ? error.response.data : error.message);
         }
       }
     };
-  
+
     fetchUserData();
-  }, [user?.email]);
-  
+  }, [user?.id]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setUserData({ ...userData, [name]: value });
@@ -50,11 +50,15 @@ const Profile = () => {
   const handleImageUpload = async () => {
     let imageUrl = userData.image;
 
+    // If image is a file (not already a string URL)
     if (userData.image && typeof userData.image !== 'string') {
       setLoading(true);
       try {
+        // Upload image to Firebase
         const fileRef = ref(storage, `profilePics/${userData.image.name}`);
         await uploadBytes(fileRef, userData.image);
+
+        // Get the download URL for the uploaded image
         imageUrl = await getDownloadURL(fileRef);
       } catch (error) {
         console.error('Error uploading image:', error);
@@ -63,28 +67,31 @@ const Profile = () => {
       }
     }
 
-    return imageUrl;
+    return imageUrl; // Return the image URL
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      // Upload image if needed
       const imageUrl = await handleImageUpload();
 
+      // Prepare updated user data
       const updatedUser = {
         name: userData.name,
         email: userData.email,
-        image: imageUrl,
+        image: imageUrl,  // Set the image URL here
       };
 
+      // Add password only if it is being changed
       if (userData.password) {
         updatedUser.password = userData.password;
       }
 
-      console.log('Submitting user data:', updatedUser);
+      // Update user via PUT request
+      await axios.put(`/api/user/me`, updatedUser);
 
-      await axios.put(`/api/users/${user.email}`, updatedUser);
-      // Handle success or navigate to another page
+      // Optionally, you can re-fetch the user data after a successful update
     } catch (error) {
       console.error('Error updating user:', error);
     }
@@ -156,7 +163,7 @@ const Profile = () => {
             <input
               type="password"
               name="password"
-              placeholder='password'
+              placeholder="Password"
               onChange={handleChange}
               className="w-full p-3 border rounded-md text-gray-700"
             />

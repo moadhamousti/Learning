@@ -19,7 +19,7 @@ app.use(cookieParser());
 
 // Configure CORS middleware
 app.use(cors({
-    origin: 'https://e-learning-rosy-sigma.vercel.app', // Replace with the origin of your frontend application
+    origin: 'https://learning-cm37.onrender.com', // Replace with the origin of your frontend application
     credentials: true // Allow credentials
 }));
 
@@ -29,6 +29,7 @@ app.use('/api/courses', require('./routes/coursesRoute'));
 app.use('/api/form', require('./routes/formRoutes')); // Make sure this matches your API calls
 app.use('/', require('./routes/dashboardRoutes'));
 app.use('/api', require('./routes/userRoutes'));
+
 
 const port = 8000;
 app.listen(port, () => console.log(`Server is running on port ${port}`));

@@ -41,22 +41,23 @@ function Navbar() {
     };
   }, []);
 
+  const handleLogout = async () => {
+    try {
+      await axios.post('/api/auth/logout', {}, { withCredentials: true });
+      logout(); // Update user context or state
+      window.location.href = '/login'; // Redirect to home after logout
+    } catch (error) {
+      console.error('Error during logout:', error);
+    }
+  };
+
   return (
-    <header className="bg-[--primary-color] text-xl font-semibold flex    justify-between items-center p-4 px-7">
+    <header className="bg-[--primary-color] text-xl font-semibold flex justify-between items-center p-4 px-7">
       <div>
         <Link to="/">
           <img src="./white-logo.svg" alt="logo" className="object-cover w-16 cursor-pointer" />
         </Link>
       </div>
-
-      {/* Main Navigation Links */}
-      {/* <div className="  hidden sm:flex md:hidden lg:flex ">
-        <ul className="list-none  hidden sm:flex  gap-2 text-[--text-color]">
-          <li><a href="#Home" className="scroll-smooth">Home</a></li>
-          <li><a href="#Features" className="scroll-smooth">Features</a></li>
-          <li><a href="#About" className="transition delay-1000 duration-300 scroll-smooth">About</a></li>
-        </ul>
-      </div> */}
 
       {/* User Menu */}
       {user ? (
@@ -66,12 +67,11 @@ function Navbar() {
             className="w-12 h-12 rounded-full overflow-hidden border border-gray-300 focus:outline-none"
           >
             <img
-              src={userImage || 'https://firebasestorage.googleapis.com/v0/b/e-learning-9e559.appspot.com/o/profilPics%2Fde7834s-6515bd40-8b2c-4dc6-a843-5ac1a95a8b55.jpg?alt=media&token=03d1a2e9-28fc-4396-bbc5-350fbef270e7'} // Ensure fallback works
+              src={userImage || 'https://firebasestorage.googleapis.com/v0/b/e-learning-9e559.appspot.com/o/profilPics%2Fde7834s-6515bd40-8b2c-4dc6-a843-5ac1a95a8b55.jpg?alt=media&token=03d1a2e9-28fc-4396-bbc5-350fbef270e7'}
               alt="User Avatar"
-              className="object-cover sm:w-full sm:h-full w-fit h-fit "
+              className="object-cover sm:w-full sm:h-full w-fit h-fit"
               onError={(e) => {
                 console.error('Image load error:', e);
-                console.error('Image URL:', e.target.src); // Log the URL that failed
               }}
             />
           </button>
@@ -79,9 +79,9 @@ function Navbar() {
           {/* Dropdown Menu */}
           {menuOpen && (
             <div className="absolute -right-2.5 mt-1 bg-[--primary-color] shadow-lg rounded-lg w-48 z-10">
-              <ul className="list-none p-2  ">
+              <ul className="list-none p-2">
                 <li>
-                  <Link to="/profile" className="block px-4 py-2 text-[--text-color] hover:text-gray-400 ">
+                  <Link to="/profile" className="block px-4 py-2 text-[--text-color] hover:text-gray-400">
                     Profile
                   </Link>
                 </li>
@@ -99,7 +99,7 @@ function Navbar() {
                 </li>
                 <li>
                   <button
-                    onClick={logout}
+                    onClick={handleLogout}
                     className="block px-4 py-2 w-full text-[--text-color] hover:text-gray-400 text-left"
                   >
                     Logout

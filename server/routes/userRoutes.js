@@ -116,24 +116,72 @@ router.get('/user/me', authenticateUser, async (req, res) => {
     }
 });
 
-// Route to get user by email
-router.get('/email/:email', async (req, res) => {
+
+// Update current user by ID
+router.put('/user/me', authenticateUser, async (req, res) => {
     try {
-      const { email } = req.params;
-      console.log('Fetching user for email:', email); // Debugging line
-      const user = await User.findOne({ email: email }).exec();
+        const userId = req.user.id; // Get the user ID from the authenticated token
+        const { name, email, image, password } = req.body;
+
+        // Prepare fields for update
+        const updateFields = {
+            name,
+            email,
+            image
+        };
+
+        // Hash the password if provided
+        if (password) {
+            updateFields.password = await bcrypt.hash(password, 10);
+        }
+
+        // Find and update the user by ID
+        const updatedUser = await User.findByIdAndUpdate(
+            userId,
+            updateFields,
+            { new: true } // Return the updated document
+        ).select('name email image'); // Select only the fields you need
+
+        if (!updatedUser) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        res.json({ message: 'User updated successfully', user: updatedUser });
+    } catch (err) {
+        console.error('Error updating user:', err);
+        res.status(500).json({ error: 'Server error' });
+    }
+});
+
+
+router.put('/users/:email', async (req, res) => {
+    try {
+      const email = req.params.email;
+      const { name, email: newEmail, image, password } = req.body;
   
-      console.log('User found:', user); // Debugging line
+      // Update user by email
+      const updatedUser = await User.findOneAndUpdate(
+        { email: email },
+        {
+          name: name, // Update with new name or keep the same
+          email: newEmail, // Update with new email or keep the same
+          image: image, // Update with new image or keep the same
+          ...(password && { password: await bcrypt.hash(password, 10) }) // Hash password if provided
+        },
+        { new: true } // Return the updated user
+      );
   
-      if (!user) {
-        return res.status(404).json({ error: 'No user found for this email' });
+      if (!updatedUser) {
+        return res.status(404).json({ error: 'User not found' });
       }
-      res.status(200).json(user);
-    } catch (error) {
-      console.error('Error fetching user:', error);
-      res.status(500).json({ error: 'An error occurred while fetching user data' });
+  
+      res.json({ message: 'User updated successfully', user: updatedUser });
+    } catch (err) {
+      console.error('Error updating user:', err);
+      res.status(500).json({ error: 'Server error' });
     }
   });
+  
   
 
 module.exports = router;

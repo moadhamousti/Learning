@@ -15,7 +15,7 @@ const Login = () => {
     // Check if the user is already logged in
     const checkAuth = async () => {
       try {
-        const response = await axios.get('https://learning-cm37.onrender.com/api/auth/profile', { withCredentials: true });
+        const response = await axios.get('https://e-learning-rosy-sigma.vercel.app/api/auth/profile', { withCredentials: true });
         if (response.data) {
           // Redirect to another page if user is already logged in
           navigate('/');
@@ -56,22 +56,22 @@ const Login = () => {
 
   const loginUser = async (e) => {
     e.preventDefault();
-
+  
     const validationErrors = validateInputs();
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
       return;
     }
-
+  
     const { email, password } = data;
     try {
-      const response = await axios.post('https://learning-cm37.onrender.com/api/auth/login', {
+      const response = await axios.post('https://e-learning-rosy-sigma.vercel.app/api/auth/login', {
         email,
         password
       }, {
-        withCredentials: true // Ensure credentials are sent with the request
+        withCredentials: true
       });
-
+  
       if (response.data.error) {
         toast.error(response.data.error, {
           icon: '🚫',
@@ -85,7 +85,8 @@ const Login = () => {
             color: 'white',
           },
         });
-        navigate('/formation'); // Redirect on successful login
+        // Refresh the /formation page after login
+        window.location.href = '/formation'; // Redirect and refresh the page
       }
     } catch (error) {
       toast.error('Error logging in. Please try again later.', {
@@ -95,9 +96,10 @@ const Login = () => {
           color: 'white',
         },
       });
-      console.error('Error logging in:', error.response.data); // Log detailed error response
+      console.error('Error logging in:', error.response.data);
     }
   };
+  
 
   return (
     <div className="flex justify-between items-center h-screen bg-gradient-to-b from-[#063D41] via-[#336a6c] to-[#4B7]">
