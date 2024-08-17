@@ -16,7 +16,7 @@ router.use(
 // Routes
 router.get('/', test)
 router.post('/register', registerUser)
-router.post('/login', loginUser)
+router.post('/login', isAuthenticated, loginUser)
 router.get('/profile', authMiddleware, getProfile);
 router.post('/logout', logoutUser);
 
