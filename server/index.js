@@ -19,7 +19,7 @@ app.use(cookieParser());
 
 // Configure CORS middleware
 app.use(cors({
-    origin: 'https://learning-cm37.onrender.com', // Replace with the origin of your frontend application
+    origin: 'https://e-learning-rosy-sigma.vercel.app', // Replace with the origin of your frontend application
     credentials: true // Allow credentials
 }));
 

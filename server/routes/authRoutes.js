@@ -9,7 +9,7 @@ const authMiddleware = require('../middlewares/authMiddleware');
 router.use(
     cors({
         credentials: true,
-        origin: 'https://learning-cm37.onrender.com',
+        origin: 'https://e-learning-rosy-sigma.vercel.app',
     })
 );
 

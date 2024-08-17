@@ -15,7 +15,7 @@ const Login = () => {
     // Check if the user is already logged in
     const checkAuth = async () => {
       try {
-        const response = await axios.get('https://e-learning-rosy-sigma.vercel.app/api/auth/profile', { withCredentials: true });
+        const response = await axios.get('/api/auth/profile', { withCredentials: true });
         if (response.data) {
           // Redirect to another page if user is already logged in
           navigate('/');
@@ -65,7 +65,7 @@ const Login = () => {
   
     const { email, password } = data;
     try {
-      const response = await axios.post('https://e-learning-rosy-sigma.vercel.app/api/auth/login', {
+      const response = await axios.post('/api/auth/login', {
         email,
         password
       }, {
