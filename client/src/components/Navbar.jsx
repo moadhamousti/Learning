@@ -43,13 +43,12 @@ function Navbar() {
 
   const handleLogout = async () => {
     try {
-      await axios.post('/api/auth/logout', {}, { withCredentials: true });
-      logout(); // Update user context or state
-      window.location.href = '/login'; // Redirect to home after logout
+        await logout(); // Call the logout function from context
+        navigate('/login'); // Redirect to login page
     } catch (error) {
-      console.error('Error during logout:', error);
+        console.error('Error during logout:', error);
     }
-  };
+};
 
   return (
     <header className="bg-[--primary-color] text-xl font-semibold flex justify-between items-center p-4 px-7">
