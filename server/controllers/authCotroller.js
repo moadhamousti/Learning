@@ -56,11 +56,14 @@ const loginUser = async (req, res) => {
                 process.env.JWT_SECRET,
                 { expiresIn: '1h' } // Token expiration
             );
+            const isProduction = process.env.NODE_ENV === 'production';
+
             res.cookie('token', token, {
                 httpOnly: true,
-                secure: true,  // Set to true by default
+                secure: isProduction,  // Set secure flag based on environment
                 sameSite: 'None'
             });
+
             return res.json({ email: user.email, id: user._id, name: user.name, isAdmin: user.isAdmin }); // Return user details
         } else {
             return res.status(401).json({ error: 'Password does not match' });
