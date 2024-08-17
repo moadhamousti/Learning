@@ -43,15 +43,12 @@ function Navbar() {
 
   const handleLogout = async () => {
     try {
-        const response = await axios.post('/api/auth/logout', {}, { withCredentials: true });
-        console.log('Logout response:', response.data);
-        logout(); // Update user context or state
-        window.location.href = '/login'; // Redirect to login page
+        await logout(); // Call the logout function from context
+        navigate('/login'); // Redirect to login page
     } catch (error) {
         console.error('Error during logout:', error);
     }
 };
-
 
   return (
     <header className="bg-[--primary-color] text-xl font-semibold flex justify-between items-center p-4 px-7">
