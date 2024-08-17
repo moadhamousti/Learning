@@ -86,7 +86,7 @@ const Login = () => {
           },
         });
         // Refresh the /formation page after login
-        window.location.href = '/formation'; // Redirect and refresh the page
+        window.location.href = '/'; // Redirect and refresh the page
       }
     } catch (error) {
       toast.error('Error logging in. Please try again later.', {
