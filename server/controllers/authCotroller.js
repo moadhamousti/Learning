@@ -93,9 +93,10 @@ const getProfile = (req, res) => {
 
 
 const logoutUser = (req, res) => {
-    res.clearCookie('token');
+    res.clearCookie('token', { httpOnly: true, secure: process.env.NODE_ENV === 'production', sameSite: 'None' });
     res.json({ message: 'Logged out successfully' });
 };
+
 
 module.exports = {
     test,
