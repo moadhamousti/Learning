@@ -53,8 +53,7 @@ const loginUser = async (req, res) => {
         if (match) {
             const token = jwt.sign(
                 { email: user.email, id: user._id, name: user.name, isAdmin: user.isAdmin },
-                process.env.JWT_SECRET,
-                { expiresIn: '1h' } // Token expiration
+                process.env.JWT_SECRET
             );
             const isProduction = process.env.NODE_ENV === 'production';
 
