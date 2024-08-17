@@ -53,7 +53,8 @@ const loginUser = async (req, res) => {
         if (match) {
             const token = jwt.sign(
                 { email: user.email, id: user._id, name: user.name, isAdmin: user.isAdmin },
-                process.env.JWT_SECRET
+                process.env.JWT_SECRET,
+                { expiresIn: '1h' } // Token expiration
             );
             const isProduction = process.env.NODE_ENV === 'production';
 
@@ -92,10 +93,9 @@ const getProfile = (req, res) => {
 
 
 const logoutUser = (req, res) => {
-    res.clearCookie('token', { httpOnly: true, secure: process.env.NODE_ENV === 'production', sameSite: 'None' });
+    res.clearCookie('token');
     res.json({ message: 'Logged out successfully' });
 };
-
 
 module.exports = {
     test,
