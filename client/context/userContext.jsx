@@ -57,7 +57,7 @@ export function UserContextProvider({ children }) {
             const { data } = await axios.post('https://learning-cm37.onrender.com/api/auth/login', { email, password }, { withCredentials: true });
             console.log('Login successful:', data);
             setUser(data);
-            navigate('/formation');
+            navigate('/');
         } catch (error) {
             console.error('Error logging in:', error.response ? error.response.data : error.message);
         }

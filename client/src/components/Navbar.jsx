@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate  } from 'react-router-dom';
 import axios from 'axios';
 import { UserContext } from '../../context/userContext';
 
@@ -8,6 +8,7 @@ function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [userImage, setUserImage] = useState('');
   const menuRef = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Fetch the current user's data by userId

@@ -18,7 +18,7 @@ router.get('/', test)
 router.post('/register', registerUser)
 router.post('/login', isAuthenticated, loginUser)
 router.get('/profile', authMiddleware, getProfile);
-router.post('/logout', logoutUser);
+router.post('/logout', authMiddleware, logoutUser);
 
 
 module.exports = {
