@@ -58,9 +58,9 @@ const loginUser = async (req, res) => {
             );
             res.cookie('token', token, {
                 httpOnly: true,
-                secure: false, // Set to true in production if using HTTPS
-                sameSite: 'Lax' // 'None' may be needed for cross-origin requests
-            });            
+                secure: process.env.NODE_ENV === 'production', // Ensure this is true in production
+                sameSite: 'None' // Allow cross-site requests
+            });                       
             return res.json({ email: user.email, id: user._id, name: user.name, isAdmin: user.isAdmin });
         } else {
             return res.status(401).json({ error: 'Password does not match' });
