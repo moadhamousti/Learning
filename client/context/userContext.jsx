@@ -44,7 +44,7 @@ export function UserContextProvider({ children }) {
     useEffect(() => {
         const fetchUser = async () => {
             try {
-                const { data } = await axios.get('https://learning-cm37.onrender.com/api/auth/profile', { withCredentials: true });
+                const { data } = await axios.get('/api/auth/profile', { withCredentials: true });
                 console.log('User data fetched:', data); // Log user data here
                 setUser(data);
             } catch (error) {
@@ -59,7 +59,7 @@ export function UserContextProvider({ children }) {
 
     const login = async (email, password) => {
         try {
-            const { data } = await axios.post('https://learning-cm37.onrender.com/api/auth/login', { email, password }, { withCredentials: true });
+            const { data } = await axios.post('/api/auth/login', { email, password }, { withCredentials: true });
             console.log('Login successful:', data);
             setUser(data);
         } catch (error) {
@@ -69,7 +69,7 @@ export function UserContextProvider({ children }) {
 
     const logout = async () => {
         try {
-            await axios.post('https://learning-cm37.onrender.com/api/auth/logout', {}, { withCredentials: true });
+            await axios.post('/api/auth/logout', {}, { withCredentials: true });
             console.log('Logout successful');
             setUser(null);
             navigate('/login');
