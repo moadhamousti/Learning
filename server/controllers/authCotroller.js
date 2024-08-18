@@ -43,8 +43,8 @@ const registerUser = async (req, res) => {
 const loginUser = async (req, res) => {
     try {
         const { email, password } = req.body;
-
         const user = await User.findOne({ email });
+
         if (!user) {
             return res.status(401).json({ error: 'No user found with this email' });
         }
@@ -54,14 +54,14 @@ const loginUser = async (req, res) => {
             const token = jwt.sign(
                 { email: user.email, id: user._id, name: user.name, isAdmin: user.isAdmin },
                 process.env.JWT_SECRET,
-                { expiresIn: '1h' } // Token expiration
+                { expiresIn: '1h' }
             );
             res.cookie('token', token, {
                 httpOnly: true,
-                secure: process.env.NODE_ENV === 'production',
-                sameSite: 'None'
-            });
-            return res.json({ email: user.email, id: user._id, name: user.name, isAdmin: user.isAdmin }); // Return user details
+                secure: false, // Set to true in production if using HTTPS
+                sameSite: 'Lax' // 'None' may be needed for cross-origin requests
+            });            
+            return res.json({ email: user.email, id: user._id, name: user.name, isAdmin: user.isAdmin });
         } else {
             return res.status(401).json({ error: 'Password does not match' });
         }
@@ -70,6 +70,7 @@ const loginUser = async (req, res) => {
         return res.status(500).json({ error: 'Something went wrong' });
     }
 };
+
 
 
 const getProfile = (req, res) => {

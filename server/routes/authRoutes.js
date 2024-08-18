@@ -9,16 +9,18 @@ const authMiddleware = require('../middlewares/authMiddleware');
 router.use(
     cors({
         credentials: true,
-        origin: 'https://e-learning-rosy-sigma.vercel.app',
+        origin: 'https://e-learning-rosy-sigma.vercel.app', // Replace with your client’s origin
     })
 );
+
 
 // Routes
 router.get('/', test)
 router.post('/register', registerUser)
-router.post('/login', isAuthenticated, loginUser)
+router.post('/login', loginUser); // No authMiddleware here
 router.get('/profile', authMiddleware, getProfile);
 router.post('/logout', authMiddleware, logoutUser);
+
 
 
 module.exports = {
