@@ -43,7 +43,7 @@ export function UserContextProvider({ children }) {
     useEffect(() => {
         const fetchUser = async () => {
             try {
-                const { data } = await axios.get('/api/auth/profile', { withCredentials: true });
+                const { data } = await axios.get('https://learning-cm37.onrender.com/api/auth/profile', { withCredentials: true });
                 setUser(data);
             } catch (error) {
                 console.error('Error fetching user profile:', error.response ? error.response.data : error.message);
@@ -57,7 +57,7 @@ export function UserContextProvider({ children }) {
 
     const login = async (email, password) => {
         try {
-            const { data } = await axios.post('/api/auth/login', { email, password }, { withCredentials: true });
+            const { data } = await axios.post('https://learning-cm37.onrender.com/api/auth/login', { email, password }, { withCredentials: true });
             setUser(data);
             navigate('/'); // Redirect to home after successful login
         } catch (error) {
@@ -67,7 +67,7 @@ export function UserContextProvider({ children }) {
 
     const logout = async () => {
         try {
-            await axios.post('/api/auth/logout', {}, { withCredentials: true });
+            await axios.post('https://learning-cm37.onrender.com/api/auth/logout', {}, { withCredentials: true });
             setUser(null);
             navigate('/login');
         } catch (error) {
