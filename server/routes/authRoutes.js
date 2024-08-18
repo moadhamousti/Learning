@@ -18,8 +18,8 @@ router.use(
 router.get('/', test)
 router.post('/register', registerUser)
 router.post('/login', loginUser); // No authMiddleware here
-router.get('/profile', getProfile);
-router.post('/logout', logoutUser);
+router.get('/profile', authMiddleware, getProfile);
+router.post('/logout', authMiddleware, logoutUser);
 
 
 
