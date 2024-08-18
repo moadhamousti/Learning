@@ -56,14 +56,11 @@ const loginUser = async (req, res) => {
                 process.env.JWT_SECRET,
                 { expiresIn: '1h' } // Token expiration
             );
-            const isProduction = process.env.NODE_ENV === 'production';
-
             res.cookie('token', token, {
                 httpOnly: true,
-                secure: isProduction,  // Set secure flag based on environment
+                secure: process.env.NODE_ENV === 'production',
                 sameSite: 'None'
             });
-
             return res.json({ email: user.email, id: user._id, name: user.name, isAdmin: user.isAdmin }); // Return user details
         } else {
             return res.status(401).json({ error: 'Password does not match' });
@@ -73,7 +70,6 @@ const loginUser = async (req, res) => {
         return res.status(500).json({ error: 'Something went wrong' });
     }
 };
-
 
 
 const getProfile = (req, res) => {

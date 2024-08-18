@@ -29,6 +29,7 @@
 
 
 
+// UserContextProvider.jsx
 import axios from 'axios';
 import { createContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -37,46 +38,48 @@ export const UserContext = createContext({});
 
 export function UserContextProvider({ children }) {
     const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true); // Add loading state
     const navigate = useNavigate();
 
     useEffect(() => {
-        axios.get('https://learning-cm37.onrender.com/api/auth/profile', { withCredentials: true })
-            .then(({ data }) => {
-                console.log('User data:', data); // Check this log to ensure data is correct
+        const fetchUser = async () => {
+            try {
+                const { data } = await axios.get('http://localhost:8000/api/auth/profile', { withCredentials: true });
+                console.log('User data fetched:', data); // Log user data here
                 setUser(data);
-            })
-            .catch((error) => {
+            } catch (error) {
                 console.error('Error fetching user profile:', error.response ? error.response.data : error.message);
                 setUser(null);
-            });
+            } finally {
+                setLoading(false); // Set loading to false after data fetch
+            }
+        };
+        fetchUser();
     }, []);
-    
 
     const login = async (email, password) => {
         try {
-            const { data } = await axios.post('https://learning-cm37.onrender.com/api/auth/login', { email, password }, { withCredentials: true });
+            const { data } = await axios.post('http://localhost:8000/api/auth/login', { email, password }, { withCredentials: true });
             console.log('Login successful:', data);
             setUser(data);
-            navigate('/');
         } catch (error) {
             console.error('Error logging in:', error.response ? error.response.data : error.message);
         }
     };
-    
+
     const logout = async () => {
         try {
-            await axios.post('https://learning-cm37.onrender.com/api/auth/logout', {}, { withCredentials: true });
+            await axios.post('http://localhost:8000/api/auth/logout', {}, { withCredentials: true });
             console.log('Logout successful');
             setUser(null);
-            navigate('/login'); // Redirect to login page
+            navigate('/login');
         } catch (error) {
             console.error('Error logging out:', error.response ? error.response.data : error.message);
         }
     };
-    
 
     return (
-        <UserContext.Provider value={{ user, login, logout }}>
+        <UserContext.Provider value={{ user, login, logout, loading }}>
             {children}
         </UserContext.Provider>
     );
