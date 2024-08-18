@@ -38,20 +38,19 @@ export const UserContext = createContext({});
 
 export function UserContextProvider({ children }) {
     const [user, setUser] = useState(null);
-    const [loading, setLoading] = useState(true); // Add loading state
+    const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
 
     useEffect(() => {
         const fetchUser = async () => {
             try {
                 const { data } = await axios.get('https://learning-cm37.onrender.com/api/auth/profile', { withCredentials: true });
-                console.log('User data fetched:', data); // Log user data here
                 setUser(data);
             } catch (error) {
                 console.error('Error fetching user profile:', error.response ? error.response.data : error.message);
                 setUser(null);
             } finally {
-                setLoading(false); // Set loading to false after data fetch
+                setLoading(false);
             }
         };
         fetchUser();
@@ -60,8 +59,8 @@ export function UserContextProvider({ children }) {
     const login = async (email, password) => {
         try {
             const { data } = await axios.post('https://learning-cm37.onrender.com/api/auth/login', { email, password }, { withCredentials: true });
-            console.log('Login successful:', data);
             setUser(data);
+            navigate('/'); // Redirect to home after successful login
         } catch (error) {
             console.error('Error logging in:', error.response ? error.response.data : error.message);
         }
@@ -70,7 +69,6 @@ export function UserContextProvider({ children }) {
     const logout = async () => {
         try {
             await axios.post('https://learning-cm37.onrender.com/api/auth/logout', {}, { withCredentials: true });
-            console.log('Logout successful');
             setUser(null);
             navigate('/login');
         } catch (error) {

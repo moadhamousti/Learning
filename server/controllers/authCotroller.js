@@ -75,12 +75,12 @@ const loginUser = async (req, res) => {
 const getProfile = (req, res) => {
     const { token } = req.cookies;
     if (token) {
-        jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+        jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
             if (err) {
                 console.error('Token verification error:', err);
                 return res.status(401).json({ error: 'Invalid token' });
             }
-            res.json(user); // Send user data
+            res.json(decoded); // Send decoded user data
         });
     } else {
         res.status(401).json({ error: 'No token provided' });
