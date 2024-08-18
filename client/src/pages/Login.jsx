@@ -18,7 +18,7 @@ const Login = () => {
         const response = await axios.get('/api/auth/profile', { withCredentials: true });
         if (response.data) {
           // Redirect to another page if user is already logged in
-          navigate('/');
+          navigate('/formation');
         }
       } catch (error) {
         // No user found or not authenticated
@@ -59,45 +59,46 @@ const Login = () => {
 
     const validationErrors = validateInputs();
     if (Object.keys(validationErrors).length > 0) {
-      setErrors(validationErrors);
-      return;
+        setErrors(validationErrors);
+        return;
     }
 
     const { email, password } = data;
     try {
-      const response = await axios.post('/api/auth/login', {
-        email,
-        password
-      }, {
-        withCredentials: true // Ensure credentials are sent with the request
-      });
+        const response = await axios.post('/api/auth/login', {
+            email,
+            password
+        }, {
+            withCredentials: true // Ensure credentials are sent with the request
+        });
 
-      if (response.data.error) {
-        toast.error(response.data.error, {
-          icon: '🚫',
-        });
-      } else {
-        setData({ email: '', password: '' });
-        toast.success('Login Successful. Welcome!', {
-          icon: '🎉',
-          style: {
-            backgroundColor: 'green',
-            color: 'white',
-          },
-        });
-        navigate('/'); // Redirect on successful login
-      }
+        if (response.data.error) {
+            toast.error(response.data.error, {
+                icon: '🚫',
+            });
+        } else {
+            setData({ email: '', password: '' });
+            toast.success('Login Successful. Welcome!', {
+                icon: '🎉',
+                style: {
+                    backgroundColor: 'green',
+                    color: 'white',
+                },
+            });
+            window.location.href = '/formation'; // Redirect with page refresh
+        }
     } catch (error) {
-      toast.error('Error logging in. Please try again later.', {
-        icon: '🚫',
-        style: {
-          backgroundColor: 'red',
-          color: 'white',
-        },
-      });
-      console.error('Error logging in:', error.response.data); // Log detailed error response
+        toast.error('Error logging in. Please try again later.', {
+            icon: '🚫',
+            style: {
+                backgroundColor: 'red',
+                color: 'white',
+            },
+        });
+        console.error('Error logging in:', error.response.data); // Log detailed error response
     }
-  };
+};
+
 
   return (
     <div className="flex justify-between items-center h-screen bg-gradient-to-b from-[#063D41] via-[#336a6c] to-[#4B7]">
