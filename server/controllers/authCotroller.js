@@ -57,10 +57,11 @@ const loginUser = async (req, res) => {
                 { expiresIn: '1h' }
             );
             res.cookie('token', token, {
-                httpOnly: true,
-                secure: process.env.NODE_ENV === 'production', // Ensure this is true in production
-                sameSite: 'None' // Allow cross-site requests
-            });                       
+                httpOnly: true, // Helps prevent XSS attacks by not allowing JavaScript to access the cookie
+                secure: true,   // Only send the cookie over HTTPS
+                sameSite: 'None' // Allow the cookie to be sent with cross-site requests
+            });
+                                   
             return res.json({ email: user.email, id: user._id, name: user.name, isAdmin: user.isAdmin });
         } else {
             return res.status(401).json({ error: 'Password does not match' });
