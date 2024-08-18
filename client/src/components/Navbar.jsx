@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext, useRef } from 'react';
 import { Link, useNavigate  } from 'react-router-dom';
 import axios from 'axios';
 import { UserContext } from '../../context/userContext';
+import logo from './../../public/logo.svg'
 
 function Navbar() {
   const { user, logout } = useContext(UserContext);
@@ -55,7 +56,7 @@ function Navbar() {
     <header className="bg-[--primary-color] text-xl font-semibold flex justify-between items-center p-4 px-7">
       <div>
         <Link to="/">
-          <img src="./white-logo.svg" alt="logo" className="object-cover w-16 cursor-pointer" />
+          <img src={logo} alt="logo" className="object-cover w-16 cursor-pointer" />
         </Link>
       </div>
 
